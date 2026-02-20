@@ -1,22 +1,52 @@
-# House Price Prediction using Machine Learning
+# 🏠 House Price Prediction ML Project
 
-## Project Description
-This project predicts house prices based on area, bedrooms, and bathrooms using Linear Regression.
+## 📌 Project Overview
+This project predicts house prices using Machine Learning models based on housing features such as:
 
-## Technologies Used
+- Area
+- Bedrooms
+- Bathrooms
+- Other housing features
+
+The project compares multiple ML models and selects the best performing model.
+
+---
+
+## 🚀 Technologies Used
 - Python
 - Pandas
 - Scikit-learn
-- Machine Learning
+- Matplotlib
+- Machine Learning Algorithms
 
-## Features
+---
+
+## 🤖 Machine Learning Models Used
+- Linear Regression
+- Decision Tree Regressor
+- Random Forest Regressor
+
+---
+
+## ⭐ Results
+| Model | R2 Score |
+|---|---|
+| Linear Regression | ~0.57 |
+| Decision Tree | ~0.62 |
+| Random Forest | ~0.80 |
+
+✅ **Best Model: Random Forest**
+
+---
+
+## 📊 Features of Project
 - Data preprocessing
+- Train-test split
 - Model training
-- Price prediction
+- Model evaluation (R2 Score, MSE)
+- Model comparison visualization
+- Feature importance analysis
 
-## How to Run
-1. Install requirements
-2. Run house_price.py
+---
 
-## Author
-Vishal Kumar Thakur
+## 📂 Project Structure
