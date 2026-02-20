@@ -29,6 +29,7 @@ The project compares multiple ML models and selects the best performing model.
 ---
 
 ## ⭐ Results
+
 | Model | R2 Score |
 |---|---|
 | Linear Regression | ~0.57 |
@@ -50,16 +51,3 @@ The project compares multiple ML models and selects the best performing model.
 ---
 
 ## 📂 Project Structure
-house-price-prediction/
-│── house_price.py
-│── data.csv
-│── README.md
-│── .gitignore
-
----
-
-## ▶️ How to Run Project
-
-### Install dependencies
-```bash
-pip install pandas scikit-learn matplotlib
