@@ -1,52 +1,119 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score, mean_squared_error
 
-# Load dataset
 
-data = pd.read_csv("data.csv")
+# ==============================
+# Load Real Housing Dataset
+# ==============================
 
-print("Dataset:")
-print(data)
+housing = fetch_california_housing()
 
-# Features (input)
+data = pd.DataFrame(housing.data, columns=housing.feature_names)
+data["price"] = housing.target
 
-X = data[["area", "bedrooms", "bathrooms"]]
+print("Dataset Preview:")
+print(data.head())
 
-# Target (output)
 
+# ==============================
+# Features and Target
+# ==============================
+
+X = data.drop("price", axis=1)
 y = data["price"]
 
-# Split data into training and testing
+
+# ==============================
+# Train Test Split
+# ==============================
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# Train model
 
-model = LinearRegression()
-model.fit(X_train, y_train)
-print("\nModel trained successfully ")
+# ==============================
+# Models
+# ==============================
 
-# Make prediction
+models = {
+    "Linear Regression": LinearRegression(),
+    "Decision Tree": DecisionTreeRegressor(),
+    "Random Forest": RandomForestRegressor(n_estimators=100)
+}
 
-new_house = pd.DataFrame([[2000, 3, 2]], columns=["area", "bedrooms", "bathrooms"])
-prediction = model.predict(new_house)
+results = {}
 
-print("\nPredicted price for 2000 sq ft house:", prediction[0])
-from sklearn.metrics import r2_score, mean_squared_error
-import matplotlib.pyplot as plt
 
-# Model evaluation
-pred_test = model.predict(X_test)
+print("\n===== MODEL TRAINING & COMPARISON =====")
 
-print("\nModel Accuracy (R2 Score):", r2_score(y_test, pred_test))
-print("Mean Squared Error:", mean_squared_error(y_test, pred_test))
+for name, model in models.items():
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
 
-# Graph: Actual vs Predicted
+    r2 = r2_score(y_test, predictions)
+    mse = mean_squared_error(y_test, predictions)
+
+    results[name] = r2
+
+    print(f"\n{name}")
+    print("R2 Score:", r2)
+    print("Mean Squared Error:", mse)
+
+
+# ==============================
+# Best Model Selection
+# ==============================
+
+best_model_name = max(results, key=results.get)
+print("\n Best Model:", best_model_name)
+
+
+# ==============================
+# Visualization: Model Comparison
+# ==============================
+
+plt.figure(figsize=(8, 5))
+plt.bar(results.keys(), results.values())
+plt.title("Model Comparison (R2 Score)")
+plt.xlabel("Models")
+plt.ylabel("R2 Score")
+plt.show()
+
+
+# ==============================
+# Feature Importance (Random Forest)
+# ==============================
+
+rf_model = RandomForestRegressor(n_estimators=100)
+rf_model.fit(X_train, y_train)
+
+importance = rf_model.feature_importances_
+
+plt.figure(figsize=(8, 5))
+plt.bar(X.columns, importance)
+plt.xticks(rotation=45)
+plt.title("Feature Importance (Random Forest)")
+plt.show()
+
+
+# ==============================
+# Actual vs Predicted Graph (Best Model)
+# ==============================
+
+best_model = models[best_model_name]
+best_model.fit(X_train, y_train)
+pred_test = best_model.predict(X_test)
+
 plt.scatter(y_test, pred_test)
 plt.xlabel("Actual Price")
 plt.ylabel("Predicted Price")
-plt.title("Actual vs Predicted House Price")
+plt.title(f"Actual vs Predicted ({best_model_name})")
 plt.show()
