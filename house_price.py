@@ -35,3 +35,18 @@ new_house = pd.DataFrame([[2000, 3, 2]], columns=["area", "bedrooms", "bathrooms
 prediction = model.predict(new_house)
 
 print("\nPredicted price for 2000 sq ft house:", prediction[0])
+from sklearn.metrics import r2_score, mean_squared_error
+import matplotlib.pyplot as plt
+
+# Model evaluation
+pred_test = model.predict(X_test)
+
+print("\nModel Accuracy (R2 Score):", r2_score(y_test, pred_test))
+print("Mean Squared Error:", mean_squared_error(y_test, pred_test))
+
+# Graph: Actual vs Predicted
+plt.scatter(y_test, pred_test)
+plt.xlabel("Actual Price")
+plt.ylabel("Predicted Price")
+plt.title("Actual vs Predicted House Price")
+plt.show()
